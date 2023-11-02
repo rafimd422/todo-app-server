@@ -28,6 +28,11 @@ async function run() {
     const database = client.db("taskDB");
     const collection = database.collection("todos");
 
+app.get('/todo', async(req,res)=>{
+    const result = await collection.find().toArray()
+    res.send(result)
+})
+
 app.post('/todo', async(req, res)=>{
     const todos = req.body;
     const result = await collection.insertOne(todos)

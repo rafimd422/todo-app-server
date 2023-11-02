@@ -8,7 +8,7 @@ app.use(cors())
 app.use(express.json())
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.TODO}:${process.env.TODO_PASS}@cluster0.sopxnju.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -39,6 +39,19 @@ app.post('/todo', async(req, res)=>{
     res.send(result)
 })
 
+app.patch('/todo/:id', async(req,res) => {
+  const id = req.params.id;
+  const body = req.body;
+  const filter = { _id: new ObjectId(id) };
+const updateDoc = {
+$set: {
+  status: body.status
+}
+}
+const result = await collection.updateOne(filter, updateDoc)
+res.send(result)
+
+})
 
 
 
